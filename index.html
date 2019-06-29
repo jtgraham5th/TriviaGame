@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Kanye Trivia Game</title>
+</head>
+
+<body style="background-image: url(assets/images/wallpaper.jpg); background-size: cover"></body>
+<div class="container bg-success mt-4 mb-4">
+    <div class="row justify-content-center align-items-center">
+        <img class="w-25" src="assets/images/head.gif" />
+        <H1>Kanye Trivia</H1>
+    </div>
+    <!-- <div id="start" class="row bg-light justify-content-center align-items-center p-4">
+        <button>Start</button>
+    </div> -->
+    <div id="question1" class="d-flex flex-column row bg-light justify-content-center align-items-center p-4 h1">
+        Which was the first album that West produced?
+        <div id="answer1" class="p-2 mt-4 m-2 ">Jermaine Dupri, “Life in 1472”</div>
+        <div id="answer2" class="p-2 m-2">Grav, “Down to Earth”</div>
+        <div id="answer3" class="p-2 m-2">Jay-Z, “Reasonable Doubt”</div>
+        <div id="answer4" class="p-2 m-2">Nas, “Illmatic”</div>
+    </div>
+</div>
+<div id="holder" class="d-none">
+    <div id="evaluation" class="d-flex flex-column row bg-light justify-content-center align-items-center text-center p-4 h1">
+        <div id="evalText" class="pb-4"></div>
+        <div> 
+            <img id="answergif" src=""/>
+        </div>
+    </div>
+</div>
+
+
+    
+
+<!-- Each question needs and id in order to compare the correct answer -->
+
+
+<!-- Create and if statement that compares users answer choice with question# id and returns in/correct answer -->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var userAnswer = "";
+var questionNumber = "";
+var correctAnswer = "";
+var right = 0;
+var wrong = 0;
+
+function getAnswers() {
+    if (questionNumber === "question1") {
+        correctAnswer = "answer2";
+    } else if (questionNumber === "question2") {
+        
+    } else if (questionNumber === "question3") {
+
+    } else if (questionNumber === "question4") {
+
+    } else if (questionNumber === "question5") {
+
+    } else if (questionNumber === "question6") {
+
+    } else if (questionNumber === "question7") {
+
+    } else if (questionNumber === "question8") {
+
+    } else if (questionNumber === "question9") {
+
+    } else if (questionNumber === "question10") {        
+}
+}
+
+// On hover highlight (change the border and background color) of each answer
+    $("[id*=answer]").hover(function(){
+        console.log("working")
+        $(this).addClass("bg-success");},
+        function (){
+            $(this).removeClass("bg-success");    
+        });
+    
+    $("[id*=answer]").click(function(){
+        let userAnswer = this.id;
+        console.log(userAnswer);
+        questionNumber = $(this).parent().attr("id");
+        console.log(questionNumber)
+        getAnswers();
+        $(this).parent().appendTo("#holder")
+        $("#evaluation").appendTo(".container")
+        if (userAnswer === correctAnswer) {
+            $("#evalText").text("Correct!")
+            $("#answergif").attr("src","assets/images/" + questionNumber + ".gif")
+            right++
+            
+        // } else if ( timer <= 0) {
+
+        } else {
+            $("#evalText").html("Nope!<br> The correct answer was " + $("#" + correctAnswer).text())
+            $("#answergif").attr("src","assets/images/kanyeshrug.gif")
+            wrong++
+
+            }
+    }); 
+           
+</script>
+
+</body>
+
+</html>
