@@ -17,26 +17,27 @@
         <img class="w-25" src="assets/images/head.gif" />
         <H1>Kanye Trivia</H1>
     </div>
+    <div id="time"></div>
     <!-- <div id="start" class="row bg-light justify-content-center align-items-center p-4">
         <button>Start</button>
     </div> -->
-    <div id="question1" class="d-flex flex-column row bg-light justify-content-center align-items-center p-4 h1">
-        Which was the first album that West produced?
-        <div id="answer1" class="p-2 mt-4 m-2 ">Jermaine Dupri, “Life in 1472”</div>
-        <div id="answer2" class="p-2 m-2">Grav, “Down to Earth”</div>
-        <div id="answer3" class="p-2 m-2">Jay-Z, “Reasonable Doubt”</div>
-        <div id="answer4" class="p-2 m-2">Nas, “Illmatic”</div>
+    <div id="main" class="d-flex flex-column row bg-light text-center justify-content-center align-items-center h1">
+        <div id="display" data-id="" class="p-2 mt-4"></div>
+        <div id="answer1" class="p-2 mt-4 m-2 "></div>
+        <div id="answer2" class="p-2 m-2"></div>
+        <div id="answer3" class="p-2 m-2"></div>
+        <div id="answer4" class="p-2 m-2"></div>
+        <img id="gif" class="d-none" src=""/>
     </div>
 </div>
 <div id="holder" class="d-none">
     <div id="evaluation" class="d-flex flex-column row bg-light justify-content-center align-items-center text-center p-4 h1">
         <div id="evalText" class="pb-4"></div>
         <div> 
-            <img id="answergif" src=""/>
+            
         </div>
     </div>
 </div>
-
 
     
 
@@ -51,32 +52,71 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+var xxx = 0;
+var answerCall = "";
 var userAnswer = "";
 var questionNumber = "";
 var correctAnswer = "";
 var right = 0;
 var wrong = 0;
+var timer = 15;
+var answered = []
+var questions = [
+     {
+        question: "Which was the first album that West produced?",
+        answer1: "Jermaine Dupri, Life in 1472",
+        answer2: "Grav, “Down to Earth",
+        answer3: "Jay-Z, Reasonable Doubt",
+        answer4: "Illmatic",
+      },
+      {
+        question: "West was inspired to create his first single, 'Through the Wire,' while doing what?",
+        answer1: "Watching footage of a deadly wildfire in Colorado",
+        answer2: "Watching “The Wire”",
+        answer3: "Recovering from a near-fatal car accident",
+        answer4: "Deciding whether to propose to his girlfriend, the designer Alexis Phifer",
+      },
+      ];
+      
 
 function getAnswers() {
-    if (questionNumber === "question1") {
-        correctAnswer = "answer2";
-    } else if (questionNumber === "question2") {
-        
-    } else if (questionNumber === "question3") {
+    console.log("this is the index of the current question:" + questions.indexOf(xxx));
+    if (questions.indexOf(xxx) === 0) {
+        correctAnswer = 2; 
+    } else if (questions.indexOf(xxx) === 1) {
+        correctAnswer = 3;
+    } else if (questions.indexOf(xxx) === 2) {
 
-    } else if (questionNumber === "question4") {
+    } else if (questions.indexOf(xxx) === 3) {
 
-    } else if (questionNumber === "question5") {
+    } else if (questions.indexOf(xxx) === 4) {
 
-    } else if (questionNumber === "question6") {
+    } else if (questions.indexOf(xxx) === 5) {
 
-    } else if (questionNumber === "question7") {
+    } else if (questions.indexOf(xxx) === 6) {
 
-    } else if (questionNumber === "question8") {
+    } else if (questions.indexOf(xxx) === 7) {
 
-    } else if (questionNumber === "question9") {
+    } else if (questions.indexOf(xxx) === 8) {
 
-    } else if (questionNumber === "question10") {        
+    } else if (questions.indexOf(xxx) === 9) {        
+}
+}
+setup();
+function setup() { 
+    xxx = questions[Math.floor(Math.random() * questions.length)];
+    if (answered.includes(questions.indexOf(xxx))) {
+       setup(); 
+    } else {
+    answered.push(questions.indexOf(xxx));
+    console.log(answered);
+    $("#display").text(xxx.question);
+    for(i=0; i < 5;i++) {
+        answerCall = "" + '#answer' + i + "";
+        $(answerCall).text(xxx["answer" + i])
+        $(answerCall).attr("data-id", i);
+        console.log($(answerCall).attr("data-id"))
+    }
 }
 }
 
@@ -89,27 +129,59 @@ function getAnswers() {
         });
     
     $("[id*=answer]").click(function(){
-        let userAnswer = this.id;
-        console.log(userAnswer);
-        questionNumber = $(this).parent().attr("id");
-        console.log(questionNumber)
+        let userAnswer = $(this).data("id");
+        console.log("User Answer: " + userAnswer);
         getAnswers();
-        $(this).parent().appendTo("#holder")
-        $("#evaluation").appendTo(".container")
+        console.log("The right answer: " + correctAnswer);
+        // $(this).parent().appendTo("#holder")
+        // $("#evaluation").appendTo(".container")
         if (userAnswer === correctAnswer) {
-            $("#evalText").text("Correct!")
-            $("#answergif").attr("src","assets/images/" + questionNumber + ".gif")
-            right++
-            
-        // } else if ( timer <= 0) {
-
+            clearInterval(clock);
+            $("#display").text("Correct!")
+            $("[id*=answer]").appendTo("#holder");
+            $("#gif").removeClass("d-none")
+            $("#gif").attr("src","assets/images/" + questionNumber + ".gif")
+            right++;
+            setTimeout(reset,3000);
         } else {
-            $("#evalText").html("Nope!<br> The correct answer was " + $("#" + correctAnswer).text())
-            $("#answergif").attr("src","assets/images/kanyeshrug.gif")
-            wrong++
-
+            clearInterval(clock);
+            answerCall = "" + '#answer' + correctAnswer + "";
+            $("#display").html("Nope!<br> The correct answer was " + $(answerCall).text())
+            $("[id*=answer]").appendTo("#holder");
+            $("#gif").removeClass("d-none")
+            $("#gif").attr("src","assets/images/kanyeshrug.gif")
+            wrong++;
+            setTimeout(reset,3000);
             }
     }); 
+    function timesup(){
+        clearInterval(clock);
+        getAnswers();
+        answerCall = "" + '#answer' + correctAnswer + "";
+        $("#display").html("Out of Time!<br> The correct answer was " + $(answerCall).text());
+        $("[id*=answer]").appendTo("#holder");
+        $("#gif").removeClass("d-none");
+        $("#gif").attr("src","assets/images/kanyeshrug.gif")
+        wrong++
+        setTimeout(reset,3000)
+    }
+    var clock = setInterval(countdown,1000);
+    
+    function reset(){
+        $("[id*=answer]").appendTo("#main");
+        $("#gif").addClass("d-none");
+        setup();
+        timer = 15;
+        setInterval(countdown,1000)
+    }
+    function countdown() {
+        timer--
+        $("#time").text(timer);
+        if (timer <= 0) {
+            timesup();
+        }
+        
+    }
            
 </script>
 
