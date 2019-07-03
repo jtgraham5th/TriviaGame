@@ -109,8 +109,8 @@ function getAnswers() {
 
 function setup() { 
     $("#time").html("<h2> Time Left: " + timer + "</h2>");
-        $("#wrong").html("<h2>Incorrect:" + wrong + "</h2>");
-        $("#right").html("<h2>Correct: " + right + "</h2>");
+    $("#wrong").html("<h2>Incorrect: " + wrong + "</h2>");
+    $("#right").html("<h2>Correct: " + right + "</h2>");
     xxx = questions[Math.floor(Math.random() * questions.length)];
     if (answered.includes(questions.indexOf(xxx))) {
        setup(); 
@@ -127,20 +127,35 @@ function setup() {
 }
 }
     $("#start").click(function(){
+        if (right > 0 || wrong > 0) {
+            timer = 15;
+            right = 0;
+            wrong = 0;
+            answered = [];
+            $("#right").appendTo("#info");
+            $("#wrong").appendTo("#info");
+            $("#start").addClass("d-none");
+            $("#gif").addClass("d-none");
+            $("[id*=answer]").appendTo("#main");
+            $("#gif").appendTo("#main")
+        } else {
+            $("#start").addClass("d-none");
+            $("#main").removeClass("d-none");
+            $("#main").addClass("d-flex");  
+        }
         run();
         setup();
-        $("#start").addClass("d-none")
-        $("#main").removeClass("d-none");
-        $("#main").addClass("d-flex");
+        
+        
     });
 
     
 // On hover highlight (change the border and background color) of each answer
     $("[id*=answer]").hover(function(){
         console.log("working")
-        $(this).addClass("bg-success");},
+        $(this).addClass("onhover");},
         function (){
-            $(this).removeClass("bg-success");    
+            $(this).removeClass("onhover");    
         });
     
     $("[id*=answer]").click(function(){
@@ -173,7 +188,7 @@ function setup() {
         $("#display").html("Out of Time!<br> The correct answer was " + $(answerCall).text());
         $("[id*=answer]").appendTo("#holder");
         $("#gif").removeClass("d-none");
-        $("#gif").attr("src","assets/images/kanyeshrug.gif")
+        $("#gif").attr("src","assets/images/kanyeshrug.gif");
         wrong++
         setTimeout(reset,3000)
     };
@@ -183,8 +198,16 @@ function setup() {
         if (answered.length >= 9) {
             timer = 0;
             $("#display").text("Game over! Here's How you did:");
-            $("#wrong").appendTo("#display")
-            $("#right").appendTo("#display")
+            $("#wrong").appendTo("#main");
+            $("#right").appendTo("#main");
+            $("#start").appendTo("#main");
+            $("#gif").appendTo("#main");
+            $("#start").removeClass("d-none")
+            if (wrong >= right) {
+                $("#gif").attr("src","assets/images/sorry.gif")
+            } else {
+                $("#gif").attr("src","assets/images/kanyeapproves.gif")
+            }
         } else {
             timer = 15;
             $("[id*=answer]").appendTo("#main");
@@ -201,7 +224,7 @@ function setup() {
     };
     function countdown() {
         $("#time").html("<h2> Time Left: " + timer + "</h2>");
-        $("#wrong").html("<h2>Incorrect:" + wrong + "</h2>")
+        $("#wrong").html("<h2>Incorrect: " + wrong + "</h2>")
         $("#right").html("<h2>Correct: " + right + "</h2>")
         timer--        
         if (timer === 0) {
